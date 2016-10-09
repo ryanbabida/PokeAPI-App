@@ -1,0 +1,92 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	  <title>PokeAPI SampleApp</title>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="stylesheet" href='{% static 'css/bootstrap.min.css' %}'> </link>
+	  <link rel="stylesheet" href='{% static 'css/mystyle.css' %}'> </link>
+
+	  <script src='{% static 'js/jquery.min.js' %}'></script>
+	  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+	</head>
+
+	<div class="col-sm-3">
+    </div>
+
+    <div class="col-sm-6">
+		<center><h1>Pokemon API Sample App</h1></center>
+			{% if err_message %}
+				<center><p>Error: {{ err_message }}</p></center>
+			{% endif %}
+			{% if not found %}
+				<center><p>Error: No pokemon '{{ name }}' found. Please enter another name</p></center>
+			{% endif %}
+
+		    <div class="form-group-sm">
+		    <form method="post" action="">
+		      {% csrf_token %}
+		          <label class="control-label" for="inputlg"></label>
+		          <textarea class="form-control" rows="1" id="post" 
+		          placeholder='Enter pokemon name' name='input'></textarea>
+		          <div>
+		            <center> <input type="submit" class="btn btn-primary" value='Go' href="{% url 'home' %}" style="margin:10px"></input> </center>
+		          </div>
+		    </form>
+		  </div>
+		  {% if found %}
+		  	{% for key, value in data.items %}
+		  		{% if key == 'name' %}
+			  			<center><h1 style="margin:10px 0px 50px 0px">{{ value }}</h1></center>
+			  		{% endif %}
+			 {% endfor %}
+		  {% endif %}
+		  <div class="col-sm-6">
+			  {% if data %}
+			  	{% for key, value in data.items %}
+			  		{% if key == 'height' %}
+			  			<center> <h2>Height</h2> </center>
+			  			<center> <h4>{{ value }}</h4> </center>
+			  		{% endif %}
+			  		{% if key == 'weight' %}
+			  			<center> <h2>Weight</h2> </center>
+			  			<center> <h4>{{ value }}</h4> </center>
+			  		{% endif %}
+			  		{% if key == 'a' %}
+			  			<center> <h2>Abilities</h2> </center>
+			  			{% for a in value %}
+			  					<center> <h4>{{ a }}</h4> </center>
+			  			{% endfor %}
+			  		{% endif %}
+			  		{% if key == 't' %}
+			  			<center> <h2>Type</h2> </center>
+			  			{% for t in value %}
+			  					<center> <h4>{{ t }}</h4> </center>
+			  			{% endfor %}
+			  		{% endif %}
+			  	{% endfor %}
+			  {% endif %}
+		  </div>
+		  <div class="col-sm-6">
+		  	{% for key, value in data.items %}
+		  		{% if key == 'image' %}
+				  	<center>
+				  		<img src="{{value}}" alt="{{value}}" height="300" width="300">
+				  	</center>
+				{% endif %}
+			{% endfor %}
+			{% for key, value in data.items %}
+				{% if key == 'gif' %}
+				  	<center>
+				  		<img src="{{value}}" alt="{{value}}" style="margin:  100px 0px 0px 0px" height="125" width="125">
+				  	</center>
+				 {% endif %}
+			{% endfor %}
+		  </div>
+
+    </div>
+	<div class="col-sm-3">
+    </div>
+</html>
